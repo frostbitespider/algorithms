@@ -1,0 +1,48 @@
+def RKMatcher(src,pat,d,q):
+	n=len(src)
+	m=len(pat)
+	h=(d**(m-1))%q
+	p=0;t=[0]*(n-m+1)
+	for i in range(0,m):
+		p=(d*p+int(pat[i]))%q
+		t[0]=(d*t[0]+int(src[i]))%q
+	for s in range(0,n-m+1):
+		if p==t[s]:
+			print(src[s:s+m])
+			if(pat[0:m]==src[s:s+m]):
+				print("match from ",s)
+		if s<n-m:
+			t[s+1]=(d*(int(t[s])-int(src[s])*h)+int(src[s+m]))%q
+	print(t)
+
+
+def RBMatcher2d(src,pat,d,q):
+	n=len(src);m=len(pat)
+	h=(d**(m-1))%q
+	p=[0]*m;t=[0]*(n)
+	for i in range(0,m):
+		for j in range(0,m):
+			p[i]=(d*int(p[i])+int(pat[j][i]))%q
+	print(p)
+	for i in range(0,n):#col
+		for j in range(0,m):#row	
+			t[i]=(d*int(t[i])+int(src[j][i]))%q
+	print(t)
+	for s in range(0,n-m):#s is row
+		k=naiveStringMatcher(t,p)
+		if k!=-1:
+			print("(s,k)=",(s,k))
+			if pat==subMatrix(src,s,k,m):
+				print("match from",(s,k))
+		if s<n-m:
+			for i in range(0,n):
+				t[i]=(d*(int(t[i])-h*int(src[s][i]))+int(src[s+m][i]))%q
+			print("row=",s+1)
+			print(t)
+	
+
+def naiveStringMatcher(src,pat):
+	for s in range(len(src)-len(pat)):
+		if pat==src[s:s+len(pat)]:
+			return s
+	return -1

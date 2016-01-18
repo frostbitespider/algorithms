@@ -1,0 +1,42 @@
+def ExEuclid(a,b):
+    if b==0:
+        print('a={},b=0'.format(a))
+        return (a,1,0)
+    else:
+        d1,x1,y1=ExEuclid(b,a%b)
+        d,x,y=d1,y1,x1-a//b*y1
+        print('a={},b={},a//b={},d={},x={},y={}'.format(a,b,a//b,d,x,y))
+        return d,x,y
+
+def ExEuclid2(a,b):
+    if b==0:
+        print('a={},b=0'.format(a))
+        return (a,1,0)
+    else:
+        d1,x1,y1=ExEuclid(b,a%b)
+        d,x,y=d1,y1,x1-a//b*y1
+        #print('a={},b={},a//b={},d={},x={},y={}'.format(a,b,a//b,d,x,y))
+        return d,x,y
+
+
+def CRT(A,B):
+	l=len(A)
+	N=1
+	lm=[]
+	lm1=[]
+	lc=[]
+	a=0
+	for ni in B:
+		N*=ni
+	for ni in B:
+		mi=N/ni
+		lm.append(mi)
+		mi1=ExEuclid2(mi,ni)[1]
+		lm1.append(mi1)
+		ci=mi*(mi1%ni)
+		lc.append(ci)
+		print('m={},m^-1={},c={}'.format(mi,mi1,ci))
+	for i in range(l):
+		a+=A[i]*lc[i]
+	a%=N
+	return a

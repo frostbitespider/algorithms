@@ -1,0 +1,75 @@
+class pack01:
+	def __init__(self,w,v,c):
+		self.w=w
+		self.v=v
+		self.c=c
+		self.curMax=0
+		self.maxPath=[]
+	def run(self):
+		self.pack(0,0,0,[])
+		print(self.curMax,self.maxPath)
+	def pack(self,i,curW,total,path):
+		if i==0:
+			curW=0
+			total=0
+		if total>self.curMax:
+			self.maxPath=path
+			self.curMax=total
+		if i<len(self.w):
+			if(len(path)>0):
+				lp=path.copy()
+				lp.append(1)
+				rp=path.copy()
+				rp.append(0)
+			else:
+				lp=[1]
+				rp=[0]
+			print(lp,rp)
+			r=self.pack(i+1,curW,total,rp)
+			if curW+self.w[i]>c:
+				l=total
+			else:
+				l=self.pack(i+1,curW+self.w[i],total+self.v[i],lp)
+			return max(l,r)
+		else:
+			return total
+			
+			
+class node:
+	def __init__(self,cw,cv,cl,par):
+		self.cw=cw
+		self.cv=cv
+		self.cl=cl
+		self.par=par
+
+			
+def bound(w,v,c):
+	Q=deque()#ke xing jie dian
+	n=node(0,0,0,None)
+	bestV=0
+	bestN=n
+	Q.append(n)
+	while len(Q)>0:
+		p=Q.popleft()
+		print(p.cw,p.cv,p.cl)
+		if p.cl<len(w):
+			if p.cw+w[p.cl]<=c:#expand left
+				q=node(p.cw+w[p.cl],p.cv+v[p.cl],p.cl+1,p)
+				Q.append(q)
+				if bestV<q.cv:
+					bestV=q.cv
+					bestN=q
+			#expand right
+			q=node(p.cw,p.cv,p.cl+1,p)
+			Q.append(q)
+	x=[]
+	for i in range(len(w)):
+		x.append(0)
+	p=bestN
+	print("best is ",bestV)
+	while p.par != None:
+		tw=p.cw
+		p=p.par
+		if p.cw!=tw:
+			x[p.cl]=1
+	print(x)

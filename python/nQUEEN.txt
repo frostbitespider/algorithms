@@ -1,0 +1,1 @@
+NQueen(int k) {//由第K层向第K+1层扩展，确定x[k]的值 if k>n then printf(x[1], … ,x[n]);     //搜索到叶结点输出解 else for i=1 to n do {   x[k]=i; if placetest(k) then NQueen(k+1); } } Placetest(int k) {//检查x[k]位置是否合法 for i=1 to k-1 do if ( x[i]=x[k] or abs(x[i]-x[k])=abs(i-k) ) then return false; return true;         } 
